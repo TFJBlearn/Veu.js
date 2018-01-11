@@ -1,0 +1,57 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+<script src="~/content/js/jquery.min.js"></script>
+<style>
+    .mytable {
+        margin-top: 5px;
+        width: 530px;
+        border: solid #6473ba;
+        text-align: center;
+        border-width: 1px 0px 0px 1px;
+    }
+
+        .mytable td {
+            border: solid #6473ba;
+            text-align: center;
+            border-width: 0px 1px 1px 0px;
+        }
+
+    .header {
+        background: #6473ba;
+        color: #eeeeee;
+    }
+</style>
+<table id="mytable" class="mytable">
+    <tr class="header">
+        <td>用户名</td>
+        <td>学号</td>
+        <td>班级</td>
+        <td>操作</td>
+    </tr>
+    <tbody id="content">
+
+    </tbody>
+</table>
+
+
+
+<script>
+    var datat;
+
+    $.ajax({
+        url: "/Home/GetDate",
+        async:false,
+        success: function (date) {
+            datat = date
+        }
+    });
+    var needhtml = "";
+    $.each(datat, function (index, item) {
+
+        needhtml += "<tr><td>" + item.UserName + "</td><td>" + item.Number + "</td><td>" + item.UClass + "</td><td><a href=\"#\">删除</a></td><</tr>"
+    });
+    $("#content").html(needhtml);
+</script>

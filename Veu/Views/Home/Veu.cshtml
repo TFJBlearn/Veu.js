@@ -1,0 +1,92 @@
+﻿@{
+    ViewBag.Title = "Veu";
+}
+
+<h2>Veu</h2>
+<script src="~/content/js/jquery.min.js"></script>
+<script src="~/content/js/vue2.2.4.js"></script>
+
+<style>
+    .mytable {
+        margin-top: 5px;
+        width: 530px;
+        border: solid #6473ba;
+        text-align: center;
+        border-width: 1px 0px 0px 1px;
+    }
+
+        .mytable td {
+            border: solid #6473ba;
+            text-align: center;
+            border-width: 0px 1px 1px 0px;
+        }
+
+    .header {
+        background: #6473ba;
+        color: #eeeeee;
+    }
+</style>
+
+<div id="content">
+    {{msg}}
+    <br />
+    <input type="text" v-model="msg" />
+
+    <div style="margin-top: 50px; margin-left: 60px">
+        <table id="mytable" class="mytable">
+            <tr class="header">
+                <td>用户名</td>
+                <td>学号</td>
+                <td>班级</td>
+                <td>操作</td>
+            </tr>
+            <tbody id="contents">
+                <tr v-for="item in ulist">
+                    <td>{{item.UserName}}</td>
+                    <td>{{item.Number}}</td>
+                    <td>{{item.UClass}}</td>
+                    <td><a href="#" v-on:click="deletea(item.Id)">删除</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+<script>
+
+
+    //ajax
+    $.ajax({
+        url: "/Home/GetDate",
+        async: false,
+        success: function (result) {
+
+            //实列化一个Veu.js对象
+            var vm = new Vue({
+
+                el: "#content",
+                data:
+                    {
+                        msg: "hello veu.js",
+                        ulist: result
+                    },
+                methods: {
+                    deletea: function (_id) {
+                        
+                        $.post("/Home/Delete", { ID: _id }, function (result) {
+
+                            if (result == 1)
+                            {
+                                alert("删除成功");
+                            }
+                            location.href = "/Home/Veu";
+                        });
+                    }
+                }
+            })
+        }
+    });
+
+</script>
